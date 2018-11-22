@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:id="@+id/hourly_forecast"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@+id/line_separator"
+                  android:layout_margin="4dp"
+                  android:gravity="center"
+                  android:orientation="vertical">
+
+        <TextView
+                android:id="@+id/time_of_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"/>
+
+        <ImageView
+                android:id="@+id/weather_icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_below="@+id/time_of_day" />
+
+        <TextView
+                android:id="@+id/temperature_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/weather_icon"
+                android:gravity="center"/>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="160dp"
+                                    android:elevation="6dp"
+                                    android:padding="8dp">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <TextView
+                android:id="@+id/daytitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Today"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:padding="16dp"/>
+
+        <View
+                android:id="@+id/line_separator"
+                android:layout_below="@+id/daytitle"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/separete" />
+
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/hourly_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/line_separator"
+                android:layout_gravity="center"
+                android:layout_margin="8dp" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
