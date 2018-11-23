@@ -8,14 +8,12 @@ import android.widget.TextView
 import com.example.aleck.brolly.R
 import com.example.aleck.brolly.model.hourly.Data
 import com.example.aleck.brolly.uitls.StringFormatter
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
-class HourlyAdapter (private val hourlyWeatherList: ArrayList<Data>) : RecyclerView.Adapter<HourlyAdapter.ViewHolder>(){
+class HourlyAdapter() : RecyclerView.Adapter<HourlyAdapter.ViewHolder>(){
 
-    //private val hourlyWeatherList: ArrayList<com.example.aleck.brolly.model.hourly.Data> = ArrayList()
-
+    private val hourlyWeatherList: ArrayList<Data> = ArrayList()
+    private var myTimeZone : String = String()
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): HourlyAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.hourly_item, null)
@@ -28,13 +26,49 @@ class HourlyAdapter (private val hourlyWeatherList: ArrayList<Data>) : RecyclerV
 
 
     override fun onBindViewHolder(viewholder: HourlyAdapter.ViewHolder, position: Int) {
-    //    Do Not Delete this
+        //Do Not Delete this
         val data = hourlyWeatherList[position]
-        val hour = StringFormatter.convertTimestampToHourFormat(data.time.toLong(), "America/Chicago")
-        val temp = data.temperature.toInt()
-        viewholder.bind(hour, temp)
+      //  val time = StringFormatter.convertFrom24To12(data.time.toLong(), "America/Chicago")
 
- //       val map = hourlyWeatherList.associateBy({StringFormatter.convertTimestampToHourFormat(it.time.toLong(), "America/Chicago")}, {it.temperature})
+       // val hour = timeFinal
+        val time = StringFormatter.convertFrom24To12(data.time.toLong(), "America/Chicago")
+        val temp = data.temperature.toInt()
+
+        viewholder.bind(time, temp)
+
+
+//        val hourlyDateOfYear = StringFormatter.convertTimestampToDate(hourlyWeatherList[position].time.toLong(), myTimeZone)
+
+//        if(hourlyWeatherList.size > 24 ){
+//            for (i in 0..24) {
+//                if (weeklyDateOfYear == hourlyDateOfYear) {
+//                    val time = StringFormatter.convertFrom24To12(hourlyWeatherList[i].time.toLong(), "America/Chicago")
+//                    val temp = hourlyWeatherList[i].temperature.toInt()
+//
+//                    viewholder.bind(time, temp)
+//
+//                }
+//            }
+//        }
+
+//        for (i in 0..24){
+//            val time = StringFormatter.convertFrom24To12(hourlyWeatherList.time.toLong(), "America/Chicago")
+//            val temp = data.temperature.toInt()
+//
+//            viewholder.bind(time, temp)
+//        }
+
+
+
+
+
+
+
+
+
+
+
+        //       val map = hourlyWeatherList.associateBy({StringFormatter.convertTimestampToHourFormat(it.time.toLong(), "America/Chicago")}, {it.temperature})
 
 //        if (hourlyWeatherList.size > 24){
 //            for (entry in map) {
@@ -112,8 +146,8 @@ class HourlyAdapter (private val hourlyWeatherList: ArrayList<Data>) : RecyclerV
 //        }
 
 
-        val calendar = Calendar.getInstance()
-        val currentDay = "Wednesday"//calendar.get(Calendar.DAY_OF_WEEK) // 0 is Sunday, 1 is Monday, 2 is Tuesday...etc see java.util.Date api
+//        val calendar = Calendar.getInstance()
+//        val currentDay = "Wednesday"//calendar.get(Calendar.DAY_OF_WEEK) // 0 is Sunday, 1 is Monday, 2 is Tuesday...etc see java.util.Date api
 
 //        val myNewList = hourlyWeatherList.filter {
 //            val dateFormat = parseDate(it.time.toLong())
@@ -235,12 +269,14 @@ class HourlyAdapter (private val hourlyWeatherList: ArrayList<Data>) : RecyclerV
 
     }
 
-    private fun parseDate(time: Long): Any {
-            val DAY = "EEEE"
-            val formatter = SimpleDateFormat (DAY, Locale.ENGLISH)
-            val dateFormat = formatter.format(Date(time))
-            return dateFormat
+    fun refreshList(hourlyData: ArrayList<Data>, timezone: String){
+        if (itemCount != 0) this.hourlyWeatherList.clear()
+        this.hourlyWeatherList.clear()
 
+        myTimeZone = timezone
+        hourlyWeatherList.addAll(hourlyData)
+
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

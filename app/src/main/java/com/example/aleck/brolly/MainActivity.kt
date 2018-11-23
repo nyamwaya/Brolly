@@ -57,33 +57,44 @@ class MainActivity : AppCompatActivity(), WeatherPresenter.WeatherView {
     }
 
     override fun onWeatherDataResponse(data: WeatherResponse) {
-        dayListAdapter.refreshList(data.daily.data, data.hourly.data)
-        setDayConditions(data.hourly.data)
+        dayListAdapter.refreshList(data.daily.data, data.hourly.data, data.timezone)
+        setDayConditions(data)
         buildCurrentConditions(data)
     }
 
 
-    private fun setDayConditions(data: List<Data>) {
+    private fun setDayConditions(data: WeatherResponse) {
+        var newList = ArrayList<Data>()
+        for (i in 0..24){
+            val weeklyDateOfYear = StringFormatter.convertTimestampToDate(data.daily.data[i].time.toLong(), data.timezone)
+            val hourlyDateOfYear = StringFormatter.convertTimestampToDate(data.hourly.data[i].time.toLong(), data.timezone)
+
+            if(weeklyDateOfYear == hourlyDateOfYear){
+                newList.add(data.hourly.data[i])
+
+            }
+
+            dayListAdapter.refreshList(data.daily.data, data.hourly.data, data.timezone)
+
+        }
+
+
+
+
+//
+//        if(data.size > 25){
+//            for (i in 0..24) {
+//                val weeklyDateOfYear = StringFormatter.convertTimestampToDate(daily. .time.toLong(), timezone)
+//
+//                val hourlyDateOfYear = StringFormatter.convertTimestampToDate(hourlyWeatherList[i].time.toLong(), myTimeZone)
+//
+//                if (weeklyDateOfYear == hourlyDateOfYear) {
+//                    newList.add(hourlyWeatherList[i])
+//                }
+//            }
+//        }
 
     }
-
-//    fun sortPhotos(photoList: PhotoList) : ArrayList<PhotoRow> {
-//        val map = HashMap<String, ArrayList<Photo>>()
-//        for (photo in photoList.photos) {
-//            var photos = map[photo.camera.full_name]
-//            if (photos == null) {
-//                photos = ArrayList()
-//                map[photo.camera.full_name] = photos
-//            }
-//            photos.add(photo)
-//        }
-//        val newPhotos = ArrayList<PhotoRow>()
-//        for ((key, value) in map) {
-//            newPhotos.add(PhotoRow(RowType.HEADER, null, key))
-//            value.mapTo(newPhotos) { PhotoRow(RowType.PHOTO, it, null) }
-//        }
-//        return newPhotos
-//    }
 
 
     private fun buildCurrentConditions(data: WeatherResponse) {
@@ -114,8 +125,8 @@ class MainActivity : AppCompatActivity(), WeatherPresenter.WeatherView {
 
     override fun onErrorResponse(errorMsg: String) {
         //Do some error handling
-
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
