@@ -8,6 +8,24 @@ Dark Sky API
 brolly
 
 
+## Dependencies
+```
+Dark Sky API
+retrofit2
+dagger
+rxjava2
+picasso
+```
+
+## Future Improvements 
+- [ ] Replace the Android Geocoding API with Google Maps Geocoding API https://developers.google.com/maps/documentation/geocoding/start
+- [ ] Networking: Too many requests are made to the network, Implement `ROOM ORM`
+- [ ] Architecture: Improve architecture with `LiveData` and `View Model`  https://developer.android.com/topic/libraries/architecture/
+- [ ] Testing: UI Espresso and Unit tests with Mockito 
+- [ ] Analytics: Crashlytics https://fabric.io/kits/android/crashlytics
+
+
+
 ## Screenshots
 ### Settings 
 ![screenshot_1543526832](https://user-images.githubusercontent.com/7425111/49253459-4e857280-f3ec-11e8-8659-f530f578b999.png)
@@ -27,23 +45,6 @@ brolly
 
 
 
-
-
-## Dependencies
-```
-Dark Sky API
-retrofit2
-dagger
-rxjava2
-picasso
-```
-
-## Future Improvements 
-- [ ] Replace the Android Geocoding API with Google Maps Geocoding API https://developers.google.com/maps/documentation/geocoding/start
-- [ ] Networking: Too many requests are made to the network, Implement `ROOM ORM`
-- [ ] Architecture: Improve architecture with `LiveData` and `View Model`  https://developer.android.com/topic/libraries/architecture/
-- [ ] Testing: UI Espresso and Unit tests with Mockito 
-- [ ] Analytics: Crashlytics https://fabric.io/kits/android/crashlytics
 
 
 
