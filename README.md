@@ -2,13 +2,14 @@
 noun plural -lies
 1. an informal Brit name for umbrella
 
-Brolly is a modern weather app. It displays the current conditions, as well as a 8 day forcast with hourly weather using the  
+Brolly is a modern weather app that displays the current conditions, as well as a 8 day forcast with hourly weather using the  
 Dark Sky API
 
 brolly
 
 
 ## Screenshot 
+
 
 
 
