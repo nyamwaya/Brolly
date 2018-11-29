@@ -10,13 +10,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 
+/**
+ * retrofit service class for our api
+ */
 class ServiceClientHelper  {
 
     interface RemoteWeatherService {
-        @GET("$API_KEY/{latitude},{longitude}?extend=hourly")
+        @GET("$DARK_SKY_API_KEY/{latitude},{longitude}?extend=hourly")
         fun requestWeather(
             @Path("latitude") latitude: String,
             @Path("longitude") longitude: String
+            //consider creating a query for other parameters like ?extend=hourly
         ): Observable<WeatherResponse>
     }
 
@@ -30,7 +34,7 @@ class ServiceClientHelper  {
 
     fun buildService() : RemoteWeatherService {
         val retrofit = Retrofit.Builder()
-            .baseUrl(API_BASE_URL)
+            .baseUrl(DARK_SKY_API_BASE_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .client(getOkHttpClient())

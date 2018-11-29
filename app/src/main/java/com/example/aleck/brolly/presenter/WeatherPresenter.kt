@@ -1,7 +1,11 @@
 package com.example.aleck.brolly.presenter
 
+import android.content.SharedPreferences
+import com.example.aleck.brolly.MainActivity
+import com.example.aleck.brolly.R
 import com.example.aleck.brolly.model.WeatherResponse
 import com.example.aleck.brolly.schedulers.RxSchedulers
+import com.example.aleck.brolly.uitls.WeatherMathUtils
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
@@ -11,7 +15,8 @@ class WeatherPresenter(
     private val weatherView: WeatherView,
     private val compositeDisposable: CompositeDisposable
 ) {
-    interface WeatherView{
+
+    interface WeatherView {
         fun onWeatherDataResponse(data: WeatherResponse)
         fun onErrorResponse(errorMsg: String)
     }
@@ -24,7 +29,7 @@ class WeatherPresenter(
         val requestCall = weatherDataProvider.provideWeatherList(latitude, longitude)
         return requestCall.subscribeOn(rxSchedulers.io())
             .observeOn(rxSchedulers.uiThread())
-            .subscribe({weatherData ->
+            .subscribe({ weatherData ->
                 weatherView.onWeatherDataResponse(weatherData)
             }, { error ->
                 error.message?.let { weatherView.onErrorResponse(it) }

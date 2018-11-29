@@ -1,19 +1,26 @@
 package com.example.aleck.brolly.adapter
 
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.example.aleck.brolly.R
 import com.example.aleck.brolly.model.hourly.Data
+import com.example.aleck.brolly.networking.IconApi
 import com.example.aleck.brolly.uitls.StringFormatter
+import com.example.aleck.brolly.uitls.WeatherMathUtils
+import com.squareup.picasso.Picasso
 import kotlin.collections.ArrayList
+import kotlin.math.roundToInt
 
-class HourlyAdapter() : RecyclerView.Adapter<HourlyAdapter.ViewHolder>(){
+class HourlyAdapter : RecyclerView.Adapter<HourlyAdapter.ViewHolder>() {
 
     private val hourlyWeatherList: ArrayList<Data> = ArrayList()
-    private var myTimeZone : String = String()
+    private var myTimeZone: String = String()
+    private var isMetricMode: Boolean = false
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): HourlyAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.hourly_item, null)
@@ -26,253 +33,25 @@ class HourlyAdapter() : RecyclerView.Adapter<HourlyAdapter.ViewHolder>(){
 
 
     override fun onBindViewHolder(viewholder: HourlyAdapter.ViewHolder, position: Int) {
-        //Do Not Delete this
         val data = hourlyWeatherList[position]
-      //  val time = StringFormatter.convertFrom24To12(data.time.toLong(), "America/Chicago")
 
-       // val hour = timeFinal
-        val time = StringFormatter.convertFrom24To12(data.time.toLong(), "America/Chicago")
-        val temp = data.temperature.toInt()
+        //get the min temp of the day
+        val minTemp = hourlyWeatherList.minBy { it.temperature }
+        //get the index of the min temp
+        val minTempIndex = hourlyWeatherList.indexOfFirst { it.temperature.toInt() == minTemp?.temperature?.toInt() }
 
-        viewholder.bind(time, temp)
+        val maxTemp = hourlyWeatherList.maxBy { it.temperature }
+        val maxTempIndex = hourlyWeatherList.indexOfFirst { it.temperature.toInt() == maxTemp?.temperature?.toInt() }
 
-
-//        val hourlyDateOfYear = StringFormatter.convertTimestampToDate(hourlyWeatherList[position].time.toLong(), myTimeZone)
-
-//        if(hourlyWeatherList.size > 24 ){
-//            for (i in 0..24) {
-//                if (weeklyDateOfYear == hourlyDateOfYear) {
-//                    val time = StringFormatter.convertFrom24To12(hourlyWeatherList[i].time.toLong(), "America/Chicago")
-//                    val temp = hourlyWeatherList[i].temperature.toInt()
-//
-//                    viewholder.bind(time, temp)
-//
-//                }
-//            }
-//        }
-
-//        for (i in 0..24){
-//            val time = StringFormatter.convertFrom24To12(hourlyWeatherList.time.toLong(), "America/Chicago")
-//            val temp = data.temperature.toInt()
-//
-//            viewholder.bind(time, temp)
-//        }
-
-
-
-
-
-
-
-
-
-
-
-        //       val map = hourlyWeatherList.associateBy({StringFormatter.convertTimestampToHourFormat(it.time.toLong(), "America/Chicago")}, {it.temperature})
-
-//        if (hourlyWeatherList.size > 24){
-//            for (entry in map) {
-//                val cal = Calendar.getInstance()
-//                val currentHour = cal.get(Calendar.HOUR)
-//                if (entry.key == currentHour.toString()){
-//                    val hour = entry.key
-//                    val temp = entry.value
-//                    viewholder.bind(hour, temp.toInt())
-//
-//                }
-//            }
-//
-//        }
-
-//        val map = hourlyWeatherList.associateBy({
-//            StringFormatter.convertTimestampToHourFormat(
-//                it.time.toLong(),
-//                "America/Chicago"
-//            )
-//        }, { it.temperature })
-//
-//        var map =
-//
-//        val cal = Calendar.getInstance()
-//        val currentHour = cal.get(Calendar.HOUR_OF_DAY)
-//
-//        for (entry in map) {
-//            if (entry.key.toInt() == currentHour) {
-//                val hour = entry.key
-//                val temp = entry.value
-//                viewholder.bind(hour)
-//            }
-//        }
-
-
-//        val map = hourlyWeatherList.associateBy({ StringFormatter.convertTimestampToHourFormat(it.time.toLong(), "America/Chicago")}, {it.temperature})
-//
-//        for (entry in map) {
-//            if (entry.key == 12.00.toString()){
-//                val hour = entry.key
-//                val temp = entry.value
-//                viewholder.bind(hour, temp.toInt())
-//            }
-//        }
-
-
-
-
-//        hourlyWeatherList.forEach {
-//            val cal = Calendar.getInstance()
-//            val currentHour = cal.get(Calendar.HOUR)
-//            val hour = it
-//            val temp = it
-//            viewholder.bind(hour)
-//        }
-//
-//        val mm = hourlyWeatherStringFormatedHoursList
-
-
-
-//        val temp = data[position].toString()
-//
-//        hourlyWeatherList.forEach {
-//            val temp = it[position].ti .toInt()
-//        }
-
-//        for (i in 0..24){
-//                if (StringFormatter.convertTimestampToHourFormat(data[i]. toLong(), "America/Chicago") < "00:))"){
-//                val temp = data.temperature.toInt()
-//                val hour = StringFormatter.convertTimestampToHourFormat(data.time.toLong(), "America/Chicago")
-//                viewholder.bind(hour, temp)
-//            }
-//
-//        }
-
-
-//        val calendar = Calendar.getInstance()
-//        val currentDay = "Wednesday"//calendar.get(Calendar.DAY_OF_WEEK) // 0 is Sunday, 1 is Monday, 2 is Tuesday...etc see java.util.Date api
-
-//        val myNewList = hourlyWeatherList.filter {
-//            val dateFormat = parseDate(it.time.toLong())
-//
-//            dateFormat == currentDay
-//
-//        }
-
-
-
-
-//        val i = hourlyWeatherList.groupBy {it.time}
-//        val temp = i[position]. .toInt()
-//        val hour = StringFormatter.convertTimestampToHourFormat(i.time.toLong(), "America/Chicago")
-//        viewholder.bind(hour, temp)
-
-//        for (i in hourlyWeatherList){
-//            //val data = hourlyWeatherList[i]
-//
-//            val dateFormat = parseDate(i.time.toLong())
-//            if (dateFormat == currentDay){
-//
-//            }
-//        }
-
- //       val t = myNewList[position]
-
-
-       // val data = myNewList[position]
-//        if (hourlyWeatherList.size >24){
-//                for(t in hourlyWeatherList){
-//                    val dateFormat = parseDate(t.time.toLong())
-//                    if (dateFormat == currentDay){
-//
-//
-//                    }
-//                }
-//
-//            }
-
-//        for (i in 0..24){
-//
-//
-//        }
-
-       // if (myNewList.size > 24){
-
-        //}
-     //   val data = hourlyWeatherList[position]
-//
-//
-//        val mParsedData = parseDate(data.time.toLong())
-//
-//        if (mParsedData == currentDay){
-//
-//
-//        }
-//
-//        val myList = ArrayList<Data>()
-//
-//        var t =myList[position]
-//
-
-
-
-        //        if (hourlyWeatherList.size > 24){
-//            val parsedTime = hourlyWeatherList
-//                .filter {data ->
-//                    val DAY = "EEEE"
-//                    val formatter = SimpleDateFormat (DAY, Locale.ENGLISH)
-//
-//                    val dateFormat = formatter.format(Date(hourlyData.time.toLong()))
-//                }
-//
-//        }
-
-        //val data =myList[position]
-
-
-
-
-
-
-//        val filtered = hourlyWeatherList.filter {
-//
-//            val parsedTime = parseDate(it.time.toLong())
-//
-//            parsedTime == currentDay
-//        }
-
-
-      //  filtered[position]
-      //  val data = filtered[position]
-
-
-
-      //  val testTime = ArrayList<Data>()
-
-
-
-
-
-
-
-
-//        if (hourlyWeatherList.size > 24) {
-//
-//        for (i in 0..24){
-//            if (StringFormatter.convertTimestampToHourFormat(data.time.toLong(), "America/Chicago") < "00:))"){
-//                val temp = data.temperature.toInt()
-//                val hour = StringFormatter.convertTimestampToHourFormat(data.time.toLong(), "America/Chicago")
-//                viewholder.bind(hour, temp)
-//            }
-//
-//        }
-//        }
-
-
-
+        viewholder.bind(data, position, minTempIndex, maxTempIndex)
     }
 
-    fun refreshList(hourlyData: ArrayList<Data>, timezone: String){
+    //get info from day list adapter
+    fun refreshList(hourlyData: ArrayList<Data>, timezone: String, metricMode: Boolean) {
         if (itemCount != 0) this.hourlyWeatherList.clear()
         this.hourlyWeatherList.clear()
 
+        isMetricMode = metricMode
         myTimeZone = timezone
         hourlyWeatherList.addAll(hourlyData)
 
@@ -282,12 +61,44 @@ class HourlyAdapter() : RecyclerView.Adapter<HourlyAdapter.ViewHolder>(){
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val hourOfDay: TextView = itemView.findViewById(R.id.time_of_day)
         private val tempOfDay: TextView = itemView.findViewById(R.id.temperature_content)
-       // private val weatherIcon: ImageView = itemView.findViewById(R.id.weather_icon)
+        private val weatherIcon: ImageView = itemView.findViewById(R.id.weather_icon)
 
-        fun bind(hour: String, temp: Int /* , icon: Int */){
-            hourOfDay.text = hour
-            tempOfDay.text = temp.toString()
-        //    weatherIcon.imageAlpha = icon
+        fun bind(data: Data, position: Int, minTempIndex: Int, maxTempIndex: Int) {
+
+            //logic to set the color to the first instance of the highest and lowest temp of the days
+            // when the minTempIndex is equal to the position
+            when {
+                maxTempIndex == position -> {
+                    hourOfDay.setTextColor(ContextCompat.getColor(itemView.context, R.color.weather_warm))
+                    weatherIcon.setColorFilter(ContextCompat.getColor(itemView.context, R.color.weather_warm))
+                    tempOfDay.setTextColor(ContextCompat.getColor(itemView.context, R.color.weather_warm))
+                }
+                minTempIndex == position -> {
+                    hourOfDay.setTextColor(ContextCompat.getColor(itemView.context, R.color.weather_cool))
+                    weatherIcon.setColorFilter(ContextCompat.getColor(itemView.context, R.color.weather_cool))
+                    tempOfDay.setTextColor(ContextCompat.getColor(itemView.context, R.color.weather_cool))
+                }
+                else -> weatherIcon.setColorFilter(ContextCompat.getColor(itemView.context, android.R.color.black))
+            }
+
+            //if it's metric mode, change the weather to celsius
+            if (isMetricMode) {
+                tempOfDay.text = WeatherMathUtils.convertFahrenheitToCelsius(data.temperature)?.roundToInt().toString()
+
+            } else {
+                tempOfDay.text = WeatherMathUtils.addDegreeSign(data.temperature.toInt().toString())
+            }
+
+            hourOfDay.text = StringFormatter.convertFrom24To12(data.time.toLong(), "America/Chicago")
+            weatherIcon.imageAlpha
+
+            //Get weather icons from the api
+            //also find a placeholder when the network is down or icon api is down
+            Picasso.get()
+                .load(IconApi.getUrlForIcon(data.icon, false))
+                //  .placeholder(R.drawable.user_placeholder)
+                //      .error(R.drawable.user_placeholder_error)
+                .into(weatherIcon)
         }
     }
 

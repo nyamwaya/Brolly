@@ -11,7 +11,8 @@ import com.example.aleck.brolly.model.daily.Data
 import com.example.aleck.brolly.uitls.StringFormatter
 import kotlin.collections.ArrayList
 
-class DayListAdapter() : RecyclerView.Adapter<DayListAdapter.ViewHolder>() {
+
+class DayListAdapter : RecyclerView.Adapter<DayListAdapter.ViewHolder>() {
 
     private val dailyWeatherList: ArrayList<com.example.aleck.brolly.model.daily.Data> = ArrayList()
 
@@ -19,47 +20,58 @@ class DayListAdapter() : RecyclerView.Adapter<DayListAdapter.ViewHolder>() {
 
     private var myTimeZone: String = String()
 
+    private var isMetricMode: Boolean = false
+
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): DayListAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.day_list_item, null)
         return ViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        return dailyWeatherList.size + hourlyWeatherList.size
+        return dailyWeatherList.size
     }
 
     override fun onBindViewHolder(viewholder: DayListAdapter.ViewHolder, position: Int) {
 
-        val dailyWeather = dailyWeatherList[position]
-        val hourData = hourlyWeatherList[position]
+        val data = dailyWeatherList[position]
+        val weeklyDateOfYear = StringFormatter.convertTimestampToDate(data.time.toLong(), myTimeZone)
+        val dayOfWeek: String
 
-        val dayOfWeek = StringFormatter.convertTimestampToDayOfTheWeek(dailyWeather.time)
+
+        //set the day titl
+        dayOfWeek = when (weeklyDateOfYear) {
+            StringFormatter.getTodayDate() -> "Today"
+            StringFormatter.getTomorrowDate() -> "Tomorrow"
+            else -> StringFormatter.convertTimestampToDayOfTheWeek(data.time)
+        }
+
         viewholder.bind(dayOfWeek)
 
+        //create the hourly adapter
         val adapter = HourlyAdapter()
         viewholder.rv.adapter = adapter
         viewholder.rv.layoutManager = GridLayoutManager(viewholder.rv.context, 4)
 
-        val newList = java.util.ArrayList<com.example.aleck.brolly.model.hourly.Data>()
-        val weeklyDateOfYear = StringFormatter.convertTimestampToDate(dailyWeather.time.toLong(), myTimeZone)
+        val formattedList = java.util.ArrayList<com.example.aleck.brolly.model.hourly.Data>()
 
-        if(hourlyWeatherList.size > 24){
-            for (i in 0..24) {
-                val hourlyDateOfYear = StringFormatter.convertTimestampToDate(hourlyWeatherList[i].time.toLong(), myTimeZone)
-                if (weeklyDateOfYear == hourlyDateOfYear) {
-                    newList.add(hourlyWeatherList[i])
-                }
+        //create a new list who's items are equal to the current day
+        for (t in hourlyWeatherList){
+            val hourlyDateOfYear = StringFormatter.convertTimestampToDate(t.time.toLong(), myTimeZone)
+            if (weeklyDateOfYear == hourlyDateOfYear) {
+                formattedList.add(t)
             }
         }
 
-        adapter.refreshList(newList, myTimeZone)
+        //pass data to the hourly recyclerview
+        adapter.refreshList(formattedList, myTimeZone, isMetricMode)
 
     }
 
-    fun refreshList(daily: List<Data>, data: List<com.example.aleck.brolly.model.hourly.Data>, timezone: String) {
+    fun refreshList(daily: List<Data>, data: List<com.example.aleck.brolly.model.hourly.Data>, timezone: String, metricMode: Boolean) {
         if (itemCount != 0) this.dailyWeatherList.clear()
         this.hourlyWeatherList.clear()
 
+        isMetricMode = metricMode
         myTimeZone = timezone
         dailyWeatherList.addAll(daily)
         hourlyWeatherList.addAll(data)

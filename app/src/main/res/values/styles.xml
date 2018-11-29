@@ -16,8 +16,12 @@
         <item name="android:windowDrawsSystemBarBackgrounds" tools:ignore="NewApi">true</item>
     </style>
 
-    <style name="HeaderBar">
-        <item name="android:background">#ff1976d2</item>
+    <style name="Theme.Brolly.Settings" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorAccent">@color/accent</item>
+        <item name="colorPrimary">@color/accent</item>
+        <item name="android:statusBarColor" tools:ignore="NewApi">@color/status_bar</item>
+        <item name="android:windowDrawsSystemBarBackgrounds" tools:ignore="NewApi">true</item>
     </style>
+
 
 </resources>

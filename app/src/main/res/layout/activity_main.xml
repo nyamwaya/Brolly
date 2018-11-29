@@ -4,9 +4,11 @@
               android:id="@+id/main_content"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              tools:context=".MainActivity" android:orientation="vertical">
+              tools:context=".MainActivity"
+              android:orientation="vertical">
 
         <RelativeLayout
+                android:id="@+id/CurrentConditionView"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:background="@color/status_bar">
